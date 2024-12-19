@@ -1,7 +1,5 @@
-
-public class Card {
 package examtp;
-
+public class Card {
 public class Card {
     public enum Colour {
         rouge("rouge"), blue("blue"), vert("vert"), jaune("jaune");
