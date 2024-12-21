@@ -1,7 +1,7 @@
-package examtp;
 
 public class Card {
-    public enum Colour {
+
+	public enum Colour {
         rouge("rouge"), blue("blue"), vert("vert"), jaune("jaune");
 
         final private String nom;
@@ -16,9 +16,16 @@ public class Card {
     }
 
     private Colour couleur;
+    private int valeur;
 
-    public Card(Colour couleur) {
+    public Card(Colour couleur, int valeur) {
         this.couleur = couleur;
+        this.valeur = valeur;
+    }
+    
+    public Card(Colour couleur) {
+    	this.couleur = couleur;
+    	this.valeur = -1;
     }
 
     public Colour getCouleur() {
@@ -27,11 +34,17 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card: " + (couleur != null ? couleur.getNom() : "card");
+    	if(valeur != -1) {
+    		 return "Card: " + couleur.getNom() + " " + valeur;
+    	} else {
+             return "Card: " + (couleur != null ? couleur.getNom() : "card");
+    }
     }
 }
 
 class SkipCard extends Card {
+
+	
     public SkipCard(Colour couleur) {
         super(couleur);
     }
