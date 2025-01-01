@@ -1,4 +1,4 @@
-package unogame;
+
 import java.util.ArrayList;
 public class Player {
 
@@ -11,9 +11,16 @@ public class Player {
 	public Player() {
 		playerHand = new ArrayList<>(); // initialise the cards player in a list 
 	}
+	//going to be used inside the game class i think
+	public Player(String playerName,int playerNumber) {
+		this();
+		this.playerName = playerName;
+		this.playerNumber = playerNumber;
+		
+	}
 	
 	public Player(ArrayList<Card> playerHand,boolean playerTurn,String playerName,int playerNumber) {
-		this.playerHand = playerHand ;
+		this.playerHand = playerHand;
 		this.playerTurn = playerTurn;
 		this.playerName = playerName;
 		this.playerNumber = playerNumber;
@@ -38,11 +45,17 @@ public class Player {
 	
 	// methodes
 	
-	public void playerDraw(ArrayList<Card> deck) { //  draw Card From Deck
+	/*public void playerDraw(ArrayList<Card> deck) { //  draw Card From Deck
 	    if (!deck.isEmpty()) {
 	        Card drawnCard = deck.remove(deck.size() - 1); // Draw the last card from the deck (-1 ? start by 0)
 	        playerHand.add(0,drawnCard); // Adds the card to the front of the list (is good to complexity )
 	    }
+	}*/
+	
+	public void playerDraw(Deck deck) { //  draw Card From Deck
+	        Card drawnCard = deck.DrawCard(); // Draw the last card from the deck (-1 ? start by 0)
+	        playerHand.add(0,drawnCard); // Adds the card to the front of the list (is good to complexity )
+	   
 	}
 	
 	public void playCard(Card card) { //when the player play a card we should remove it from the player hand list
@@ -57,7 +70,7 @@ public class Player {
 	@Override
 	public String toString() {
 		
-		return super.toString() + "player name is :" + this.playerName + " Hand = " + this.playerHand;
+		return super.toString() + "player name is :" + this.playerName + "Number : "+ this.playerNumber +" Hand = " + this.playerHand;
 	}
 	
 	public void switchTurn() { // call this procedure for the player who has skiped & for the player who must play 
