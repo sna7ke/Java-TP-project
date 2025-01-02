@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 public class Game {
 	
 	//defining the node class which is going to represent a player on a bidirectional list
@@ -54,22 +55,41 @@ public class Game {
 	private CircularLinkedList list;
 	private Deck CardDeck;
 	private boolean TurnDirection;
+	private boolean GameState;
+	private Card DiscardPile;
 	
 	public Game (ArrayList<Player> players) {
+		
+		CardDeck = new Deck();
+		CardDeck.ShuffleDeck();
 		
 		list = new CircularLinkedList();
 		
 		for(Player player : players) {
+			
+			//we give each player 5 cards at the start
+			for(int i=0;i<5;i++) {
+				player.playerDraw(CardDeck);
+			}
+			
 			list.AddPlayerToList(player);
 		}
 		TurnDirection =true;
+		GameState = true;
 	}
 	
 	//a method to show the current player
-	public void DisplayCurrentPlayer() {
+	public Player DisplayCurrentPlayer() {
 		Player player=list.GetCurrentPlayer();
-		System.out.println(player);
+		//System.out.println(player);
+		player.showHand();
+		return player;
 	}
+	
+	public Card ProcessInput(int Index,Player player) {		
+		return player.PlayCard(Index);
+	}
+	
 	public void UpdatePosition() {
 		if(TurnDirection) {
 		list.MoveTurnRight();
@@ -78,6 +98,33 @@ public class Game {
 			list.MoveTurnLeft();
 		}
 	}
-	
-
+	private void UpdateGameState() {
+		Player player =list.GetCurrentPlayer();
+		if (player.playerWon() || CardDeck.IsDeckEmpty()) {
+			GameState = false;
+		}
+		else {
+			GameState= true;
+		}
+	}
+	public void UpdateGame(Scanner scan) {
+		Player CurrentPlayer = DisplayCurrentPlayer();
+		int index;
+		Card PlayedCard;
+		System.out.println("choose a card");
+		
+		do {
+		index = scan.nextInt();
+		PlayedCard = ProcessInput(index, CurrentPlayer);
+		
+		}while(PlayedCard==null);
+		
+		DiscardPile = PlayedCard;
+		UpdateGameState();
+		UpdatePosition();
+		System.out.println(DiscardPile);
+	}
+	public boolean GetGameState() {
+		return GameState;
+	}
 }

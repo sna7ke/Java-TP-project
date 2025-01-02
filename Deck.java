@@ -40,6 +40,7 @@ public class Deck {
      }  
  }   
  Random random = new Random();
+ 
  public void ShuffleDeck() {
   for(int i=0; i< cards.size(); i++) {
    int j = i + random.nextInt(cards.size() - i); // j is random index selected from the interval [i - cards.size() - 1]
@@ -49,6 +50,10 @@ public class Deck {
    cards.set(i, cards.get(j));
    cards.set(j, temp);
   }
+ }
+ 
+ public boolean IsDeckEmpty() {
+	 return cards.isEmpty();
  }
  
  public Card DrawCard() {

@@ -58,19 +58,41 @@ public class Player {
 	   
 	}
 	
-	public void playCard(Card card) { //when the player play a card we should remove it from the player hand list
+	/*public void playCard(Card card) { //when the player play a card we should remove it from the player hand list
 		playerHand.remove(card);
+	}*/
+	
+	public Card PlayCard(int index) {
+		if (index > playerHand.size()||index<1) {
+			System.out.println("INVALID");
+			return null;
+		}
+		else {
+			return playerHand.remove(index-1);
+		}
+		
 	}
 	
 	public void showHand() { // show all the cards in player hand
-		System.out.println("player name is :" + this.playerName + " Hand = " + this.playerHand);
+		//System.out.println("player name is :" + this.playerName + " Hand = " + this.playerHand);
+		System.out.println("player name is :" + this.playerName + " Hand = " );
+		//to display each card with its index 
+		
+		for(int i=0;i<playerHand.size();i++) {
+			System.out.println(" "+(i+1)+". |"+playerHand.get(i)+"|");
+			
+		}
+		System.out.println();
+
 	}
 	
 
 	@Override
 	public String toString() {
 		
-		return super.toString() + "player name is :" + this.playerName + "Number : "+ this.playerNumber +" Hand = " + this.playerHand;
+		//return super.toString() + "player name is :" + this.playerName + "Number : "+ this.playerNumber +" Hand = " + this.playerHand;
+		return "player : " + this.playerName + " your hand : " + this.playerHand;
+		
 	}
 	
 	public void switchTurn() { // call this procedure for the player who has skiped & for the player who must play 
