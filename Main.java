@@ -9,7 +9,7 @@ public class Main {
 		System.out.println("enter 4 players please : ");
 		
 		for(int i=0;i<4;i++) {
-			players.add(new Player("PLAYER",i));
+			players.add(new Player("PLAYER "+ Integer.toString(i+1),i));
 		}
 		
 		Game game = new Game(players);

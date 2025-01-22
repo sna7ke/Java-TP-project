@@ -17,9 +17,9 @@ public class Deck {
   for(Card.Colour color : Card.Colour.values()) { // for every card colour in the card colour values (color is an index color(1)=red .....)
    // add number cards for each color
    for(int i=0; i<=9; i++) {
-    cards.add(new Card(color,i)); // add one card for each color and value   
+    cards.add(new ColoredCard(color,Integer.toString(i))); // add one card for each color and value   
     if(i!=0) {
-     cards.add(new Card(color,i)); // add a second card for values 1 to 9
+     cards.add(new ColoredCard(color,Integer.toString(i))); // add a second card for values 1 to 9
     }
    }
   }

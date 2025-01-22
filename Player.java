@@ -62,20 +62,29 @@ public class Player {
 		playerHand.remove(card);
 	}*/
 	
-	public Card PlayCard(int index) {
+	public Card PlayCard(int index,Card TopCard) {
 		if (index > playerHand.size()||index<1) {
 			System.out.println("INVALID");
 			return null;
 		}
 		else {
-			return playerHand.remove(index-1);
+			Card playedcard = playerHand.get(index-1);
+			
+			if(playedcard.IsCardPlayable(TopCard)) {
+				return playerHand.remove(index-1);
+			}
+			else {
+				System.out.println("CANNOT PLAY CARD");
+				return null;
+			}
+			
 		}
 		
 	}
 	
 	public void showHand() { // show all the cards in player hand
 		//System.out.println("player name is :" + this.playerName + " Hand = " + this.playerHand);
-		System.out.println("player name is :" + this.playerName + " Hand = " );
+		System.out.println(" player name is : " + this.playerName + " Hand = " );
 		//to display each card with its index 
 		
 		for(int i=0;i<playerHand.size();i++) {

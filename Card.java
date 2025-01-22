@@ -1,7 +1,6 @@
-
-
-public class Card {
-
+import java.util.*;
+abstract class Card {
+	
 	 public enum Colour {
 	        rouge("rouge"), blue("blue"), vert("vert"), jaune("jaune");
 
@@ -15,111 +14,139 @@ public class Card {
 	            return nom;
 	        }
 	    }
+	//private String color;
+	private String value;
+	private Colour couleur;
+	
+	public Card(Colour color, String value) {
+		this.couleur = color;
+		this.value = value;
+	}
+	
+	public Card (Colour couleur) {
+		this.couleur=couleur;
+	}
+	
+	public Card(String value) {
+		this.value=value;
+	}
+	
+	abstract public boolean IsCardPlayable(Card TopCard);
+	abstract void ApplyEffect(Game game,Scanner scan);
+	
+	public String getValue() {
+		return value;
+	}
+	public Colour getColour() {
+		return couleur;
+	}
+	
+	public void SetColour(Colour couleur) {
+		this.couleur = couleur;
+	}
+	 
+	public String toString() {
+		return (couleur != null ? couleur + " ": "") + value; //if the colour is null (which is the case for wild cards) we only write the value BUT after the wild cards get a colour it writes the colour
+	}
+	
+	
+}
 
-	    private Colour couleur;
-	    private int valeur;
+abstract class SpecialCard extends Card{
+	SpecialCard(String value){
+		super(null,value);
+	}
+	
+	@Override
+	public boolean IsCardPlayable(Card TopCard) {
+		return true;
+	}
+}
 
-	    public Card(Colour couleur, int valeur) {
-	        this.couleur = couleur;
-	        this.valeur = valeur;
-	    }
+class WildCard extends SpecialCard{
+	WildCard(){
+		super("Wild");
+	}
+	WildCard(String value){
+		super(value);
+	}
+	
+	 @Override
+	  public void ApplyEffect(Game game,Scanner scan){
+	    System.out.println("choose a color : 1.rouge , 2.blue , 3.vert , 4.jaune");
+	    int choice = scan.nextInt();
+	    SetColour(Card.Colour.values()[choice-1]); //this sets the colour of the wild colour to the choice of the player
 	    
-	    public Card(Colour couleur) {
-	     this.couleur = couleur;
-	     this.valeur = -1;
-	    }
+	  }
+}
 
-	    public Colour getCouleur() {
-	        return couleur;
-	    }
-	    
 
-	    @Override
-	    public String toString() {
-	     if(valeur != -1) {
-	       return "Card: " + couleur.getNom() + " " + valeur;
-	     } else {
-	             return "Card: " + (couleur != null ? couleur.getNom() : "card");
-	    }
-	    }
+class WildDrawFourCard extends WildCard{
+	WildDrawFourCard(){
+		super("wild draw four");
 	}
+	
+	@Override
+	public void ApplyEffect(Game game, Scanner scan) {
+		super.ApplyEffect(game, scan);
+		System.out.println("DRAW FOUR ");
+		game.DrawCards(4);
+	}
+}
 
-	class SkipCard extends Card {
 
+
+class ColoredCard extends Card{
+	
+	ColoredCard(Colour color, String value){
+		super(color, value);
+	}
+	
+	@Override
+	public boolean IsCardPlayable(Card TopCard) {
+		return (TopCard.getColour()==this.getColour() || TopCard.getValue()==this.getValue());
+	}
+	
+	@Override
+	public void ApplyEffect(Game game, Scanner scan) {
+		//empty implementation because colored cards do nothing
+	}
+}
+
+class SkipCard extends ColoredCard{
+	SkipCard(Colour color){
+		super(color,"Skip");
+	}
+	
+	 @Override
+	  public void ApplyEffect(Game game,Scanner scan){
+	    System.out.println("SKIP");
+	    game.UpdatePosition();
+	  }
 	 
-	    public SkipCard(Colour couleur) {
-	        super(couleur);
-	    }
+}
 
-	    public void skipCard() {
-	        System.out.println("Passe ton tour");
-	    }
 
-	    @Override
-	    public String toString() {
-	        return super.toString() + " - Passe ton tour";
-	    }
+class ReverseCard extends ColoredCard{
+	ReverseCard(Colour color){
+		super(color,"Reverse");
 	}
-
-	class ReverseCard extends Card {
-	 
-	    public ReverseCard(Colour couleur) {
-	        super(couleur);
-	    }
-
-	    public void reverseCard() {
-	        System.out.println("Inverser le sens du jeu");
-	    }
-
-	    @Override
-	    public String toString() {
-	        return super.toString() + " - Inverser";
-	    }
+	
+	public void ApplyEffect(Game game,Scanner scan) {
+		game.InvertDirection();
 	}
+}
 
-	class DrawTwoCard extends Card {
-	 
-	    public DrawTwoCard(Colour couleur) {
-	        super(couleur);
-	    }
 
-	    public void drawTwoCard() {
-	        System.out.println("L'adversaire pioche 2 cartes");
-	    }
-
-	    @Override
-	    public String toString() {
-	        return super.toString() + " - Plus 2";
-	    }
+class DrawTwoCard extends ColoredCard{
+	DrawTwoCard(Colour color){
+		super(color,"Draw two");
 	}
-
-	class WildCard extends Card {
-	 
-	    public WildCard() {
-	        super(null); 
-	    }
-
-	    public void wildCard() {
-	        System.out.println("Choisissez une nouvelle couleur");
-	    }
-
-	    @Override
-	    public String toString() {
-	        return "Carte Joker - Choisissez une couleur"; 
-	    }
+	
+	@Override
+	public void ApplyEffect(Game game,Scanner scan) {
+		System.out.println("DRAWN TWO");
+		game.DrawCards(2);
 	}
+}
 
-	class WildDrawFourCard extends Card {
-	    public WildDrawFourCard() {
-	        super(null); 
-	    }
-
-	    public void wildDrawFourCard() {
-	        System.out.println("Choisissez une nouvelle couleur et l'adversaire pioche 4 cartes");
-	    }
-
-	    @Override
-	    public String toString() {
-	        return "Carte Joker +4 - Choisissez une couleur";
-	    }
-	}

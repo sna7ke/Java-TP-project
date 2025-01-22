@@ -74,6 +74,7 @@ public class Game {
 			
 			list.AddPlayerToList(player);
 		}
+		DiscardPile = CardDeck.DrawCard();
 		TurnDirection =true;
 		GameState = true;
 	}
@@ -86,8 +87,11 @@ public class Game {
 		return player;
 	}
 	
-	public Card ProcessInput(int Index,Player player) {		
-		return player.PlayCard(Index);
+	public Card ProcessInput(int Index,Player player) {
+		if(Index ==0) {
+			return null;
+		}
+		return player.PlayCard(Index,DiscardPile);
 	}
 	
 	public void UpdatePosition() {
@@ -108,22 +112,45 @@ public class Game {
 		}
 	}
 	public void UpdateGame(Scanner scan) {
+		System.out.println("the discard pile now "+DiscardPile);
 		Player CurrentPlayer = DisplayCurrentPlayer();
 		int index;
 		Card PlayedCard;
-		System.out.println("choose a card");
+		System.out.println("choose a card or press 0 to draw a card from the deck !");
 		
 		do {
 		index = scan.nextInt();
 		PlayedCard = ProcessInput(index, CurrentPlayer);
 		
-		}while(PlayedCard==null);
+		}while(PlayedCard==null && index !=0);
+		
+		if(index == 0) {
+			CurrentPlayer.playerDraw(CardDeck);
+		}
+		else {
 		
 		DiscardPile = PlayedCard;
+		
+		PlayedCard.ApplyEffect(this, scan);
+		}
+		
 		UpdateGameState();
 		UpdatePosition();
-		System.out.println(DiscardPile);
 	}
+	
+	public void DrawCards(int NumberOfCards) {
+		//we know that all the draw cards skip the turns
+		UpdatePosition();
+		Player player = list.GetCurrentPlayer();
+		for(int i=0;i<NumberOfCards;i++) {
+			player.playerDraw(CardDeck);
+		}
+	}
+	
+	public void InvertDirection() {
+		this.TurnDirection = ! this.TurnDirection ;
+	}
+	
 	public boolean GetGameState() {
 		return GameState;
 	}
