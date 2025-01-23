@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Deck {
 
- private List<Card> cards; 
+ protected List<Card> cards; 
  
  Deck(){
   cards = new ArrayList<>();
@@ -63,6 +63,7 @@ public class Deck {
   return cards.remove(0); // return the card at index 0 (the top card) and removing it from the deck
  }
  
+ 
  public void ResetDeck() {
   cards.clear(); // clear the deck if there are cards left
   // resetting the deck and shuffling it
@@ -74,4 +75,46 @@ public class Deck {
    System.out.println(card); // for each card from the deck display the cards
   }
  }
+}
+
+class DiscardPile extends Deck{
+	
+	public DiscardPile() {
+		super(); // calls the parent constructor to initalize the deck (the pile)
+		clearPile(); // the discard pile starts empty
+	}
+	
+	private void clearPile() {
+		while(!IsDeckEmpty()) {
+			DrawCard(); // clear discard pile by drawing all the cards without returning them to anything
+		}
+	}
+	
+	public Card getTopCard() {
+		if(IsDeckEmpty()) {
+			System.out.println("discard pile is empty ! ");
+		}
+		else {
+			return cards.get(0); // return the top card of the discard pile
+		}
+		return null;
+	}
+	
+	public void displayPile() {
+		if(IsDeckEmpty()) {
+			System.out.println("discard pile is empty ! ");
+		}
+		else {
+			// display discard pile as a stack
+			System.out.println(" Discard Pile ");
+			System.out.println("--------------");
+			for(int i=0; i< cards.size(); i++) {
+				System.out.println((i + 1) + ": " + cards.get(i));
+			}
+		}
+	}
+
+    public void addCard(Card card) {
+		cards.add(0, card); // add the card to the top of the pile
+	}
 }
