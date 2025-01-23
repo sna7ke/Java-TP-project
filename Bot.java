@@ -31,7 +31,6 @@ public class Bot extends Player {
             }
         } else {
             System.out.println(getplayerName() + " has no playable card and draws one.");
-            
         }
 
         return chosenCard;
