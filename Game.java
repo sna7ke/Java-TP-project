@@ -56,7 +56,7 @@ public class Game {
 	private Deck CardDeck;
 	private boolean TurnDirection;
 	private boolean GameState;
-	private Card DiscardPile;
+	private DiscardPile DiscardPile;
 	
 	public Game (ArrayList<Player> players) {
 		
@@ -74,7 +74,8 @@ public class Game {
 			
 			list.AddPlayerToList(player);
 		}
-		DiscardPile = CardDeck.DrawCard();
+		DiscardPile = new DiscardPile();
+		DiscardPile.addCard(CardDeck.DrawCard());
 		TurnDirection =true;
 		GameState = true;
 	}
@@ -91,7 +92,7 @@ public class Game {
 		if(Index ==0) {
 			return null;
 		}
-		return player.PlayCard(Index,DiscardPile);
+		return player.PlayCard(Index,DiscardPile.getTopCard());
 	}
 	
 	public void UpdatePosition() {
@@ -112,7 +113,7 @@ public class Game {
 		}
 	}
 	public void UpdateGame(Scanner scan) {
-		System.out.println("the discard pile now "+DiscardPile);
+		System.out.println("the discard pile now "+DiscardPile.getTopCard());
 		Player CurrentPlayer = DisplayCurrentPlayer();
 		int index;
 		Card PlayedCard;
@@ -129,7 +130,7 @@ public class Game {
 		}
 		else {
 		
-		DiscardPile = PlayedCard;
+		DiscardPile.addCard(PlayedCard);
 		
 		PlayedCard.ApplyEffect(this, scan);
 		}
