@@ -84,12 +84,12 @@ public class Game {
 	public Player DisplayCurrentPlayer() {
 		Player player=list.GetCurrentPlayer();
 		//System.out.println(player);
-		player.showHand();
 		return player;
 	}
 	
 	public Card ProcessInput(int Index,Player player) {
 		if(Index ==0) {
+			//indicates that the player only wants to draw from the deck rather than play a card
 			return null;
 		}
 		return player.PlayCard(Index,DiscardPile.getTopCard());
@@ -107,14 +107,21 @@ public class Game {
 		Player player =list.GetCurrentPlayer();
 		if (player.playerWon() || CardDeck.IsDeckEmpty()) {
 			GameState = false;
+			if(player.playerWon()) {
+				System.out.println("the player " + player +" has won !");
+			}
+			else {
+				System.out.println(" A tie :( ");
+			}
 		}
 		else {
 			GameState= true;
 		}
 	}
 	public void UpdateGame(Scanner scan) {
-		System.out.println("the discard pile now "+DiscardPile.getTopCard());
 		Player CurrentPlayer = DisplayCurrentPlayer();
+		CurrentPlayer.showHand();
+		System.out.println("the top of the discard pile: "+DiscardPile.getTopCard());
 		int index;
 		Card PlayedCard;
 		System.out.println("choose a card or press 0 to draw a card from the deck !");

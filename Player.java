@@ -100,7 +100,7 @@ public class Player {
 	public String toString() {
 		
 		//return super.toString() + "player name is :" + this.playerName + "Number : "+ this.playerNumber +" Hand = " + this.playerHand;
-		return "player : " + this.playerName + " your hand : " + this.playerHand;
+		return this.playerName;
 		
 	}
 	
