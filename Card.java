@@ -104,7 +104,12 @@ class ColoredCard extends Card{
 	
 	@Override
 	public boolean IsCardPlayable(Card TopCard) {
-		return (TopCard.getColour()==this.getColour() || TopCard.getValue()==this.getValue());
+		System.out.println("Top Card: " + TopCard);// *
+        System.out.println("Current Card: " + this);// *
+		if (TopCard.getColour()==this.getColour() || TopCard.getValue().equals(this.getValue())) { 
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
